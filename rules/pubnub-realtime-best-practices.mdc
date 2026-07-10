@@ -1,0 +1,17 @@
+---
+description: Apply PubNub realtime architecture best practices when building apps with PubNub.
+alwaysApply: false
+---
+
+When generating PubNub implementations:
+
+- Do not expose secret keys in frontend code. Secret keys are for server-side use only.
+- Always use a unique, persistent `userId` for SDK initialization. Never use random or anonymous IDs across sessions.
+- Use clear, consistent channel naming conventions (e.g. `chat.<roomId>`, `game.<gameId>.state`).
+- Include retry and reconnect behavior. Real-time connections drop; apps must handle this gracefully.
+- Include presence only where user or activity state is genuinely needed. Presence has a cost at scale.
+- Keep message payloads under 32 KB. Prefer smaller, focused messages over large blobs.
+- Use PubNub Functions for lightweight server-side logic (validation, transformation, webhooks) where appropriate.
+- Include observability guidance: log publish timetokens, subscribe status events, and connection state changes.
+- Implement offline catch-up using `fetchMessages` from the last known timetoken on reconnect.
+- Use Access Manager tokens with least-privilege permissions; never grant wildcard access in production.
