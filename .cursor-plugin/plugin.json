@@ -19,6 +19,7 @@
     "live-events",
     "event-driven-apps"
   ],
+  "license": "Apache-2.0",
   "logo": "assets/pubnub-logo.svg",
   "skills": "skills/",
   "rules": "rules/",
