@@ -140,7 +140,3 @@ Then reload Cursor (`Cmd+Shift+P` → **Developer: Reload Window**) and verify t
 - [Available MCP Tools](https://www.pubnub.com/docs/ai/available-mcp-tools)
 - [PubNub Skills on GitHub](https://github.com/pubnub/skills)
 - [PubNub Admin Portal](https://admin.pubnub.com)
-
-## License
-
-Apache 2.0
