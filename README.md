@@ -123,16 +123,6 @@ The PubNub MCP server exposes 16 tools across 5 categories. Full reference at [p
 | Illuminate analytics | `manage_illuminate` |
 | Insights analytics | `insights` |
 
-## Local Development
-
-To test the plugin locally before it's live on the Marketplace:
-
-```bash
-ln -s /path/to/pubnub-realtime-development ~/.cursor/plugins/local/pubnub-realtime-development
-```
-
-Then reload Cursor (`Cmd+Shift+P` → **Developer: Reload Window**) and verify the plugin loads under **Customize**.
-
 ## Resources
 
 - [PubNub Documentation](https://www.pubnub.com/docs)
