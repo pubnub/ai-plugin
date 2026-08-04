@@ -6,7 +6,7 @@
     "name": "PubNub"
   },
   "homepage": "https://www.pubnub.com",
-  "repository": "https://github.com/PubNubDevelopers/pubnub-realtime-development",
+  "repository": "https://github.com/pubnub/ai-plugin",
   "keywords": [
     "pubnub",
     "realtime",
