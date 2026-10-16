@@ -1,0 +1,155 @@
+name: lint
+
+# Deterministic documentation checks on every pull request.
+# Markdown syntax covers the whole tree. Vale and link checks cover
+# only the Markdown files the pull request changes.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Lint_md_files:
+    name: Lint_md_files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      # Globs, ignores, and front matter live in .markdownlint-cli2.yaml.
+      # Rules live in .markdownlint.yml. Every Markdown file is checked,
+      # including files this pull request did not touch.
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v19
+
+  Run_Vale_on_modified_files:
+    name: Run_Vale_on_modified_files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List changed Markdown files
+        id: changed
+        run: |
+          files=$(git diff --name-only --diff-filter=ACMR "${{ github.event.pull_request.base.sha }}" HEAD -- '*.md' '*.mdx')
+          if [ -z "$files" ]; then
+            echo "any=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "any=true" >> "$GITHUB_OUTPUT"
+            echo "files=$(echo "$files" | tr '\n' ' ' | sed 's/ *$//')" >> "$GITHUB_OUTPUT"
+          fi
+
+      # reviewdog comments on added lines. MinAlertLevel in .vale.ini is
+      # error, and only error findings fail this job.
+      - name: Run Vale
+        if: steps.changed.outputs.any == 'true'
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: ${{ steps.changed.outputs.files }}
+          separator: " "
+          reporter: github-pr-review
+          fail_level: error
+          filter_mode: added
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  Check_external_links:
+    name: Check_external_links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List changed Markdown files
+        id: changed
+        run: |
+          files=$(git diff --name-only --diff-filter=ACMR "${{ github.event.pull_request.base.sha }}" HEAD -- '*.md' '*.mdx')
+          if [ -z "$files" ]; then
+            echo "any=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "any=true" >> "$GITHUB_OUTPUT"
+            echo "files=$(echo "$files" | tr '\n' ' ' | sed 's/ *$//')" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check external links
+        if: steps.changed.outputs.any == 'true'
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --config lychee.config.toml
+            --no-progress
+            ${{ steps.changed.outputs.files }}
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Branch protection on master requires a check named lint. The jobs above
+  # keep their own names so each failure stays visible; this job is the gate.
+  lint:
+    name: lint
+    needs:
+      - Lint_md_files
+      - Run_Vale_on_modified_files
+      - Check_external_links
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm documentation checks passed
+        run: |
+          for result in \
+            "${{ needs.Lint_md_files.result }}" \
+            "${{ needs.Run_Vale_on_modified_files.result }}" \
+            "${{ needs.Check_external_links.result }}"
+          do
+            if [ "$result" != "success" ]; then
+              echo "A documentation check finished as ${result}."
+              exit 1
+            fi
+          done
+
+  # TODO(llm): Fact check. Needs an LLM judge (Claude Haiku on AWS Bedrock).
+  # The judge only lists claims in added lines and links each one to an entry
+  # in .github/facts/registry. It must not decide whether a claim is true.
+  # A script then compares numbers. Red (the number contradicts the registry)
+  # fails the pull request. Yellow (the registry does not cover the claim, or
+  # the model could not run, including forks with no AWS access) does not.
+  # Leave this job commented out until BEDROCK_MODEL_ID and AWS_ROLE_ARN exist.
+  #
+  # Review_diff:
+  #   name: Review_diff
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 10
+  #   permissions:
+  #     contents: read
+  #     id-token: write
+  #     pull-requests: write
+  #   steps:
+  #     - name: Check out
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+  #         aws-region: us-east-1
+  #     - name: Review added lines
+  #       env:
+  #         BEDROCK_MODEL_ID: ${{ vars.BEDROCK_MODEL_ID }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         PR_NUMBER: ${{ github.event.pull_request.number }}
+  #       run: node .github/facts/scripts/review-diff.js

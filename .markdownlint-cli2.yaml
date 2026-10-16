@@ -1,0 +1,10 @@
+# Strip YAML front matter on skills and slash commands before linting.
+frontMatter: "^---[\\s\\S]*?---\\r?\\n"
+
+globs:
+  - "**/*.md"
+  - "**/*.mdx"
+
+ignores:
+  # Logo and other binary assets are not documentation.
+  - "assets/**"
