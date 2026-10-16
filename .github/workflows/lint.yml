@@ -51,18 +51,19 @@ jobs:
             echo "files=$(echo "$files" | tr '\n' ' ' | sed 's/ *$//')" >> "$GITHUB_OUTPUT"
           fi
 
-      # reviewdog comments on added lines. MinAlertLevel in .vale.ini is
-      # error, and only error findings fail this job.
+      # Vale itself, not reviewdog. reviewdog reads the pull request through
+      # the GitHub API, and the pubnub organization IP allow list rejects
+      # GitHub-hosted runners, so that call fails the job even when Vale is clean.
+      # MinAlertLevel in .vale.ini is error, and Vale's exit code fails the job.
       - name: Run Vale
         if: steps.changed.outputs.any == 'true'
-        uses: errata-ai/vale-action@reviewdog
-        with:
-          files: ${{ steps.changed.outputs.files }}
-          separator: " "
-          reporter: github-pr-review
-          fail_level: error
-          filter_mode: added
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          vale_version=3.24.0
+          curl -fsSL -o /tmp/vale.tar.gz \
+            "https://github.com/errata-ai/vale/releases/download/v${vale_version}/vale_${vale_version}_Linux_64-bit.tar.gz"
+          sudo tar -xzf /tmp/vale.tar.gz -C /usr/local/bin vale
+          vale sync
+          echo "${{ steps.changed.outputs.files }}" | xargs vale
 
   Check_external_links:
     name: Check_external_links
