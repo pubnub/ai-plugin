@@ -24,4 +24,7 @@ exclude = [
   '^https?://([a-z0-9-]+\.)*linkedin\.com',
   '^https?://support\.pubnub\.com',
   '^https?://([a-z0-9-]+\.)*epicgames\.com',
+  # 404 in skills/pubnub-scale/references/scaling-patterns.md. Drop this
+  # once the Speed-o-Meter link is replaced.
+  '^https://www\.pubnub\.com/developers/speed/?$',
 ]
