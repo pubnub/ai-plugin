@@ -1,0 +1,27 @@
+# External links in changed Markdown files. Relative links are not checked.
+timeout = 30
+max_retries = 3
+retry_wait_time = 2
+
+# 403 and 429 are treated as reachable. Some sites block automated clients.
+accept = ["200..=299", "403", "429"]
+
+# GET avoids false failures from servers that reject HEAD.
+method = "get"
+
+no_progress = true
+
+# Links inside fenced code are sample URLs, not documentation references.
+include_verbatim = false
+
+# mailto: is never checked. Private, link-local, and loopback addresses neither.
+include_mail = false
+exclude_all_private = true
+
+scheme = ["http", "https"]
+
+exclude = [
+  '^https?://([a-z0-9-]+\.)*linkedin\.com',
+  '^https?://support\.pubnub\.com',
+  '^https?://([a-z0-9-]+\.)*epicgames\.com',
+]
