@@ -1,0 +1,10 @@
+extends: existence
+message: "'%s' goes out of date. State the behavior without a time cue."
+level: error
+ignorecase: true
+tokens:
+  - '\bcurrently\b'
+  - '\brecently\b'
+  - '\bas of\b'
+  - '\bnew in\b'
+  - '\bsince \d{4}\b'

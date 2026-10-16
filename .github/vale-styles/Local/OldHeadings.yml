@@ -1,0 +1,9 @@
+extends: existence
+message: "Heading '%s' marks the page as old, legacy, or deprecated."
+level: error
+scope: heading
+ignorecase: true
+tokens:
+  - '\(old\)'
+  - '\blegacy\b'
+  - '\bdeprecated\b'

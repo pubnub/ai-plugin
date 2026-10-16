@@ -1,0 +1,4 @@
+# Local Vale package downloads and the lychee response cache.
+.lycheecache
+.github/vale-styles/Microsoft/
+.github/vale-styles/write-good/

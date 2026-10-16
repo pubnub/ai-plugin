@@ -1,0 +1,82 @@
+# Markdown syntax rules for this plugin. Wording is Vale's job.
+# Unlisted rules stay at markdownlint defaults.
+default: true
+
+# Heading levels step one at a time (no H1 then H3).
+MD001: true
+
+# ATX headings (`# Title`), which is what the skills already use.
+MD003:
+  style: atx
+
+# Unordered lists use `-`. This repo does not use `*` or `+`.
+MD004:
+  style: dash
+
+# No trailing spaces. Two trailing spaces would be a hidden line break.
+MD009: true
+
+# Tabs break table alignment in the skill references.
+MD010: true
+
+# Reversed links (`(text)[url]`) are always a mistake.
+MD011: true
+
+# Multiple blank lines are common between sections of long references.
+# Turning this on fails the current tree.
+MD012: false
+
+# Skill lines and tables run past 80 characters. A fixed width does not
+# match how these files are written.
+MD013: false
+
+# Headings already have the blank lines this rule wants, except a few
+# tight reference indexes. Left off so those existing pages stay valid.
+MD022: false
+
+# The same heading text is reused across reference sections (for example
+# "Security"). `siblings_only` still collides inside those indexes.
+MD024: false
+
+# Ordered lists are numbered 1. 2. 3. Style "one" (every item written "1.")
+# is the docs site's choice, and it does not match this repo.
+MD029:
+  style: ordered
+
+# Fenced blocks sit against list items in eval tasks and references.
+MD031: false
+
+# Lists often follow a lead-in line without a blank line, especially in
+# SKILL.md files and slash commands.
+MD032: false
+
+# Raw HTML is not used for formatting. HTML comments are allowed by this rule.
+MD033: true
+
+# A few reference pages paste a status URL as text. Left off until those
+# are turned into real links.
+MD034: false
+
+# Inline code is sometimes a single highlighted space, written as `` ` ` ``.
+MD038: false
+
+# Many fences are prompt samples or partial snippets with no single language.
+# The docs site requires a language tag; enforcing that here fails existing files.
+MD040: false
+
+# Files open with front matter, an HTML ownership comment, or a command
+# prompt. They are not articles that must start with an H1.
+MD041: false
+
+# Images need alt text. Decorative images are not used in these files.
+MD045: true
+
+# Files should end with one newline. One reference is missing it today,
+# so the rule stays off until that file is touched on purpose.
+MD047: false
+
+# "Do" / "Don't" labels are bold lead-ins, not skipped heading levels.
+MD036: false
+
+# Eval tasks include compact tables that sit against the following line.
+MD058: false
