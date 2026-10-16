@@ -97,6 +97,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # Branch protection on master requires a check named lint. The jobs above
+  # keep their own names so each failure stays visible; this job is the gate.
+  lint:
+    name: lint
+    needs:
+      - Lint_md_files
+      - Run_Vale_on_modified_files
+      - Check_external_links
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm documentation checks passed
+        run: |
+          for result in \
+            "${{ needs.Lint_md_files.result }}" \
+            "${{ needs.Run_Vale_on_modified_files.result }}" \
+            "${{ needs.Check_external_links.result }}"
+          do
+            if [ "$result" != "success" ]; then
+              echo "A documentation check finished as ${result}."
+              exit 1
+            fi
+          done
+
   # TODO(llm): Fact check. Needs an LLM judge (Claude Haiku on AWS Bedrock).
   # The judge only lists claims in added lines and links each one to an entry
   # in .github/facts/registry. It must not decide whether a claim is true.
