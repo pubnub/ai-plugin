@@ -2,3 +2,6 @@
 .lycheecache
 .github/vale-styles/Microsoft/
 .github/vale-styles/write-good/
+
+# macOS system files.
+.DS_Store

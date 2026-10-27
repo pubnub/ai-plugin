@@ -1,0 +1,27 @@
+{
+  "name": "pubnub-realtime-development",
+  "displayName": "PubNub Realtime Development",
+  "version": "1.0.0",
+  "description": "Build production-ready realtime applications with PubNub skills and MCP tools for messaging, chat, presence, multiplayer, live events, and connected experiences.",
+  "author": {
+    "name": "PubNub",
+    "url": "https://www.pubnub.com"
+  },
+  "homepage": "https://www.pubnub.com/docs",
+  "repository": "https://github.com/pubnub/ai-plugin",
+  "privacyPolicyUrl": "https://www.pubnub.com/legal/privacy-policy/",
+  "keywords": [
+    "pubnub",
+    "realtime",
+    "messaging",
+    "chat",
+    "presence",
+    "multiplayer",
+    "live-events",
+    "event-driven-apps"
+  ],
+  "icon": "./assets/pubnub-logo.png",
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "mcpServers": "./mcp.json"
+}

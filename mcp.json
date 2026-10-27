@@ -1,6 +1,7 @@
 {
   "mcpServers": {
     "pubnub": {
+      "type": "http",
       "url": "https://mcp.pubnub.com"
     }
   }
