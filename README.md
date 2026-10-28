@@ -9,7 +9,7 @@ for AI agents.
 
 | Component | Details |
 | --- | --- |
-| **Hosted MCP server** | 16 tools through the [PubNub MCP server](https://mcp.pubnub.com) for documentation, messaging, presence, history, App Context, Illuminate, Insights, and keyset management |
+| **Hosted MCP server** | 16 tools through the [PubNub MCP server](https://www.pubnub.com/docs/ai-development/mcp-server) for documentation, messaging, presence, history, App Context, Illuminate, Insights, and keyset management |
 | **Skills** | Domain-specific guidance covering PubNub platform features and realtime use cases |
 | **Commands** | Guided workflows for common realtime application types |
 | **Cursor rules** | Cursor-specific guidance for secure, reliable PubNub implementations |
@@ -51,7 +51,7 @@ search for **PubNub Realtime Development**.
 
 After installation:
 
-1. Cursor connects to the [PubNub MCP server](https://mcp.pubnub.com).
+1. Cursor connects to the [PubNub MCP server](https://www.pubnub.com/docs/ai-development/mcp-server).
 2. Sign in with your PubNub account through OAuth.
 3. The PubNub MCP tools become available to the agent.
 4. Skills activate automatically when your request matches their purpose.
@@ -141,7 +141,7 @@ multiple matches, with catch-up for users who join mid-game.
 
 ## MCP Connector
 
-The plugin references the hosted [PubNub MCP server](https://mcp.pubnub.com).
+The plugin references the hosted [PubNub MCP server](https://www.pubnub.com/docs/ai-development/mcp-server).
 The connector uses OAuth to access PubNub resources on your behalf. Do not add
 publish, subscribe, secret, or access tokens to the plugin files.
 
