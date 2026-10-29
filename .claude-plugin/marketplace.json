@@ -1,0 +1,24 @@
+{
+  "name": "pubnub",
+  "owner": {
+    "name": "PubNub"
+  },
+  "description": "PubNub skills and MCP tools for building realtime applications.",
+  "plugins": [
+    {
+      "name": "pubnub-realtime-development",
+      "source": "./",
+      "description": "Build realtime applications with PubNub skills and MCP tools.",
+      "version": "1.0.0",
+      "keywords": [
+        "pubnub",
+        "realtime",
+        "messaging",
+        "chat",
+        "presence",
+        "multiplayer",
+        "live-events"
+      ]
+    }
+  ]
+}
